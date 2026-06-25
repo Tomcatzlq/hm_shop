@@ -1,17 +1,5 @@
 # hm_shop
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+一个基于Flutter的购物应用，用于展示商品分类、商品列表、购物车、订单等。
+- 项目采用Flutter框架开发，使用Dart语言编写。
+- 项目采用Material Design设计规范，提供良好的用户体验。
+- 项目采用RESTful API与后端交互，获取商品数据、处理用户操作等。
