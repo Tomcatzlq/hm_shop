@@ -12,6 +12,7 @@ class _HmmorelistState extends State<Hmmorelist> {
   Widget build(BuildContext context) {
     //必须是sliver家族的组件
     return SliverGrid.builder(
+      itemCount: 20,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         mainAxisSpacing: 10,

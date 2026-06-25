@@ -22,7 +22,7 @@ class _HmcategoryState extends State<Hmcategory> {
             width: 80,
             height: 100,
             color: Colors.blue,
-            child: Text("分类$index",style: TextStyle(fontSize: 20,color: Colors.white),),
+            child: Text("分类${index + 1}",style: TextStyle(fontSize: 20,color: Colors.white),),
             margin: EdgeInsets.symmetric(horizontal: 10),
           );
         }

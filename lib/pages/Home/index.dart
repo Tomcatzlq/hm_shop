@@ -4,6 +4,7 @@ import 'package:hm_shop/components/Home/HmMoreList.dart';
 import 'package:hm_shop/components/Home/HmSlider.dart';
 import 'package:hm_shop/components/Home/HmSuggestion.dart';
 import 'package:hm_shop/components/Home/Hmhot.dart';
+import 'package:hm_shop/viewmodels/home.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({Key? key}) : super(key: key);
@@ -13,10 +14,18 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  //声明一个轮播图模型类
+  final List<BannerItem> _bannerList = [
+    BannerItem(id: "1",imageUrl: "https://tomcatzlq1.oss-cn-hangzhou.aliyuncs.com/hm_shop/1.png"),
+    BannerItem(id: "2",imageUrl: "https://tomcatzlq1.oss-cn-hangzhou.aliyuncs.com/hm_shop/2.png"),
+    BannerItem(id: "3",imageUrl: "https://tomcatzlq1.oss-cn-hangzhou.aliyuncs.com/hm_shop/3.png"),
+    BannerItem(id: "4",imageUrl: "https://tomcatzlq1.oss-cn-hangzhou.aliyuncs.com/hm_shop/4.png"),
+  ];
+
   List<Widget> _getSlSlivers(){
     return [
       //包裹普通sliver家族的组件
-      SliverToBoxAdapter(child: Hmslider(),),
+      SliverToBoxAdapter(child: Hmslider(bannerList: _bannerList,),),
       //放置间距组件
       SliverToBoxAdapter(child: SizedBox(height: 10,)),
       //放置分类组件
