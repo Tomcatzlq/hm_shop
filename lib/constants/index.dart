@@ -1,0 +1,14 @@
+//全局常量类
+class GlobalConstants{
+  //静态常量 不可变
+  // static const String BASE_URL = "http://localhost:8081";//全局基础url
+  static const String BASE_URL = "https://meikou-api.itheima.net";//全局基础url
+  static const int TIME_OUT = 10;//全局超时时间
+  static const String SUCCESS_CODE = "1";//全局成功状态
+}
+
+//存放请求地址接口
+class HttpConstants{
+  static const String BANNER_LIST = "/home/banner";//轮播图接口
+  static const String CATEGORY_LIST = "/home/category/head";//分类列表接口
+}

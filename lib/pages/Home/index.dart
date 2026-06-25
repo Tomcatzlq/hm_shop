@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hm_shop/api/home.dart';
 import 'package:hm_shop/components/Home/HmCategory.dart';
 import 'package:hm_shop/components/Home/HmMoreList.dart';
 import 'package:hm_shop/components/Home/HmSlider.dart';
@@ -14,14 +15,34 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  //声明一个分类列表模型类
+  List<CategoryItem> _categoryList = [];
   //声明一个轮播图模型类
-  final List<BannerItem> _bannerList = [
-    BannerItem(id: "1",imageUrl: "https://tomcatzlq1.oss-cn-hangzhou.aliyuncs.com/hm_shop/1.png"),
-    BannerItem(id: "2",imageUrl: "https://tomcatzlq1.oss-cn-hangzhou.aliyuncs.com/hm_shop/2.png"),
-    BannerItem(id: "3",imageUrl: "https://tomcatzlq1.oss-cn-hangzhou.aliyuncs.com/hm_shop/3.png"),
-    BannerItem(id: "4",imageUrl: "https://tomcatzlq1.oss-cn-hangzhou.aliyuncs.com/hm_shop/4.png"),
+  List<BannerItem> _bannerList = [
+  //   BannerItem(id: "1",imageUrl: "https://tomcatzlq1.oss-cn-hangzhou.aliyuncs.com/hm_shop/1.png"),
+  //   BannerItem(id: "2",imageUrl: "https://tomcatzlq1.oss-cn-hangzhou.aliyuncs.com/hm_shop/2.png"),
+  //   BannerItem(id: "3",imageUrl: "https://tomcatzlq1.oss-cn-hangzhou.aliyuncs.com/hm_shop/3.png"),
+  //   BannerItem(id: "4",imageUrl: "https://tomcatzlq1.oss-cn-hangzhou.aliyuncs.com/hm_shop/4.png"),
   ];
-
+  //初始化获取数据
+  @override
+  void initState() { 
+    super.initState();
+    _getBannerList();
+    _getCategoryList();
+  }
+  //获取轮播图列表
+  Future<void> _getBannerList() async {
+    _bannerList = await getBannerListAPI();
+    // print(_bannerList);
+    setState(() {});
+  }
+  //获取分类列表
+  Future<void> _getCategoryList() async {
+    _categoryList = await getCategoryListAPI();
+    // print(_categoryList);
+    setState(() {});
+  }
   List<Widget> _getSlSlivers(){
     return [
       //包裹普通sliver家族的组件
@@ -29,7 +50,7 @@ class _HomeViewState extends State<HomeView> {
       //放置间距组件
       SliverToBoxAdapter(child: SizedBox(height: 10,)),
       //放置分类组件
-      SliverToBoxAdapter(child: Hmcategory(),),
+      SliverToBoxAdapter(child: Hmcategory(categoryList: _categoryList,),),
       //放置推荐组件
       SliverToBoxAdapter(child: SizedBox(height: 10,)),
       SliverToBoxAdapter(child: Hmsuggestion(),),      
