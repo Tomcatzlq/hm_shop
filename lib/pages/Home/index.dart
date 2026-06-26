@@ -54,6 +54,22 @@ class _HomeViewState extends State<HomeView> {
     _getHotList();//获取热榜推荐列表
     _getOneStopList();//获取一站式推荐列表
     _getRecommendList();//获取推荐列表
+    _registerEvent();//注册事件
+  }
+  //页码
+  int _page = 1;
+  bool _isLoading = false;//是否正在加载更多数据
+  bool _hasMore = true;//是否还有更多数据
+  //注册事件
+  void _registerEvent(){
+    _scrollController.addListener((){
+      //滚动到底部再触发
+      if(_scrollController.position.pixels >= _scrollController.position.maxScrollExtent){
+        //加载更多数据
+        _getRecommendList();//获取推荐列表
+        // print("滚动到底部了");
+      }
+    });
   }
   //获取特惠推荐列表
   Future<void> _getSpecialList() async {
@@ -93,9 +109,18 @@ class _HomeViewState extends State<HomeView> {
   }
   //获取推荐列表
   Future<void> _getRecommendList() async {
-    _recommendList = await getRecommendListAPI({"limit":20});
-    // print(_recommendList);
+    if(_isLoading || !_hasMore){//判断是否正在加载数据 或 是否还有更多数据 就放弃请求
+      return;
+    }
+    _isLoading = true;//占住位置
+    _recommendList = await getRecommendListAPI({"limit": _page * 10});
+    _isLoading = false;//释放位置
     setState(() {});
+    if(_recommendList.length <  _page * 10){
+      _hasMore = false;
+      return;
+    }
+    _page++;
   }
   List<Widget> _getSlSlivers(){
     return [
@@ -126,8 +151,13 @@ class _HomeViewState extends State<HomeView> {
       HmMoreList(recommendList: _recommendList),
     ];
   }
+  //滚动控制器
+  final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
-      return CustomScrollView(slivers: _getSlSlivers());////silver家族的内容
+      return CustomScrollView(
+        slivers: _getSlSlivers(),
+        controller: _scrollController,//绑定滚动控制器
+        );////silver家族的内容
   }
 }
