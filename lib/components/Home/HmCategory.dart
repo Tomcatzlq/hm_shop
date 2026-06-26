@@ -34,8 +34,8 @@ class _HmcategoryState extends State<Hmcategory> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,//垂直方向居中
               children: [
-                Image.network(item.picture ?? "",width: 40,height: 40),
-                Text(item.name ?? "",style: TextStyle(fontSize: 12,color: Colors.black),),
+                Image.network(item.picture,width: 40,height: 40),
+                Text(item.name,style: TextStyle(fontSize: 12,color: Colors.black),),
               ],
             ),
           );

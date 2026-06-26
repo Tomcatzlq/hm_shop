@@ -57,3 +57,15 @@ Future<SpecialItem?> getOneStopAPI() async {
   }
   return SpecialItem.fromJson(res);
 }
+//推荐列表接口
+Future<List<GoodDetailItem>> getRecommendListAPI(Map<String, dynamic> params) async {
+  //发送请求获取推荐列表
+  final res = await DioRequest().get(HttpConstants.RECOMMEND_LIST,params: params);
+  //判断是否成功
+  if(res == null || res is! List){
+    return [];
+  }
+  return (res as List).map((item){
+    return GoodDetailItem.formJSON(item as Map<String,dynamic>);//将map转换为gooddetailitem对象
+  }).toList();
+}

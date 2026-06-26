@@ -42,6 +42,8 @@ class _HomeViewState extends State<HomeView> {
     title: "",
     subTypes: [],
   );
+  //声明一个推荐列表模型类
+  List<GoodDetailItem> _recommendList = [];
   //初始化获取数据
   @override
   void initState() { 
@@ -51,6 +53,7 @@ class _HomeViewState extends State<HomeView> {
     _getSpecialList();//获取特惠推荐列表
     _getHotList();//获取热榜推荐列表
     _getOneStopList();//获取一站式推荐列表
+    _getRecommendList();//获取推荐列表
   }
   //获取特惠推荐列表
   Future<void> _getSpecialList() async {
@@ -88,6 +91,12 @@ class _HomeViewState extends State<HomeView> {
     // print(_categoryList);
     setState(() {});
   }
+  //获取推荐列表
+  Future<void> _getRecommendList() async {
+    _recommendList = await getRecommendListAPI({"limit":20});
+    // print(_recommendList);
+    setState(() {});
+  }
   List<Widget> _getSlSlivers(){
     return [
       //包裹普通sliver家族的组件
@@ -114,7 +123,7 @@ class _HomeViewState extends State<HomeView> {
       ),
       //放置更多列表组件
       SliverToBoxAdapter(child: SizedBox(height: 10,)),
-      Hmmorelist(),
+      HmMoreList(recommendList: _recommendList),
     ];
   }
   @override
