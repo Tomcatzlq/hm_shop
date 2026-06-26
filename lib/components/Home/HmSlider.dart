@@ -24,7 +24,7 @@ class _HmsliderState extends State<Hmslider> {
     return CarouselSlider(
       carouselController: carouselController,
       items:List.generate(widget.bannerList.length, (int index){
-        return Image.network(widget.bannerList[index].imageUrl!,
+        return Image.network(widget.bannerList[index].imageUrl,
         fit: BoxFit.cover,//图片等比例缩放，填充整个容器
         width: screenWidth,);//！表示非空
       }),

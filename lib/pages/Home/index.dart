@@ -24,12 +24,57 @@ class _HomeViewState extends State<HomeView> {
   //   BannerItem(id: "3",imageUrl: "https://tomcatzlq1.oss-cn-hangzhou.aliyuncs.com/hm_shop/3.png"),
   //   BannerItem(id: "4",imageUrl: "https://tomcatzlq1.oss-cn-hangzhou.aliyuncs.com/hm_shop/4.png"),
   ];
+  //声明一个特惠推荐模型类
+  SpecialItem _specialItem = SpecialItem(
+    id: "",
+    title: "",
+    subTypes: [],
+  );
+  //声明一个热榜推荐模型类
+  SpecialItem _hotItem = SpecialItem(
+    id: "",
+    title: "",
+    subTypes: [],
+  );
+  //声明一个一站式推荐模型类
+  SpecialItem _oneStopItem = SpecialItem(
+    id: "",
+    title: "",
+    subTypes: [],
+  );
   //初始化获取数据
   @override
   void initState() { 
     super.initState();
-    _getBannerList();
-    _getCategoryList();
+    _getBannerList();//获取轮播图列表
+    _getCategoryList();//获取分类列表
+    _getSpecialList();//获取特惠推荐列表
+    _getHotList();//获取热榜推荐列表
+    _getOneStopList();//获取一站式推荐列表
+  }
+  //获取特惠推荐列表
+  Future<void> _getSpecialList() async {
+    final result = await getSpecialAPI();
+    if(result != null){
+      _specialItem = result;
+      setState(() {});
+    }
+  }
+  //获取热榜推荐列表
+  Future<void> _getHotList() async {
+    final result = await getInVogueAPI();
+    if(result != null){
+      _hotItem = result;
+      setState(() {});
+    }
+  }
+  //获取一站式推荐列表
+  Future<void> _getOneStopList() async {
+    final result = await getOneStopAPI();
+    if(result != null){
+      _oneStopItem = result;
+      setState(() {});
+    }
   }
   //获取轮播图列表
   Future<void> _getBannerList() async {
@@ -53,7 +98,7 @@ class _HomeViewState extends State<HomeView> {
       SliverToBoxAdapter(child: Hmcategory(categoryList: _categoryList,),),
       //放置推荐组件
       SliverToBoxAdapter(child: SizedBox(height: 10,)),
-      SliverToBoxAdapter(child: Hmsuggestion(),),      
+      SliverToBoxAdapter(child: Hmsuggestion(specialItem: _specialItem,),),      
       //放置热门组件,中间有间距
       SliverToBoxAdapter(child: SizedBox(height: 10,)),
       SliverToBoxAdapter(child: Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: 10),
@@ -61,9 +106,9 @@ class _HomeViewState extends State<HomeView> {
           direction: Axis.horizontal,
           children: [
             //设置均分空间Expanded
-            Expanded(child: Hmhot()),
+            Expanded(child: HmHot(result: _hotItem,type: "hot",)),
             SizedBox(width: 10,),
-            Expanded(child: Hmhot()),
+            Expanded(child: HmHot(result: _oneStopItem,type: "step",)),
           ],
         )),
       ),
