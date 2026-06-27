@@ -12,7 +12,7 @@ Future<List<BannerItem>> getBannerListAPI() async {
     return [];
   }
   return (res as List).map((item){
-    return BannerItem.fromJson(item as Map<String,dynamic>);//将map转换为banneritem对象
+    return BannerItem.formJSON(item as Map<String,dynamic>);//将map转换为banneritem对象
   }).toList();
 }
 //分类列表接口
@@ -24,7 +24,7 @@ Future<List<CategoryItem>> getCategoryListAPI() async {
     return [];
   }
   return (res as List).map((item){
-    return CategoryItem.fromJson(item as Map<String,dynamic>);//将map转换为categoryitem对象
+    return CategoryItem.formJSON(item as Map<String,dynamic>);//将map转换为categoryitem对象
   }).toList();
 }
 //特惠推荐接口
@@ -35,7 +35,7 @@ Future<SpecialItem?> getSpecialAPI() async {
   if(res == null || res is! Map<String, dynamic>){
     return null;
   }
-  return SpecialItem.fromJson(res);
+  return SpecialItem.formJSON(res);
 }
 //热榜推荐接口
 Future<SpecialItem?> getInVogueAPI() async {
@@ -45,7 +45,7 @@ Future<SpecialItem?> getInVogueAPI() async {
   if(res == null || res is! Map<String, dynamic>){
     return null;
   }
-  return SpecialItem.fromJson(res);
+  return SpecialItem.formJSON(res);
 }
 //一站式推荐接口
 Future<SpecialItem?> getOneStopAPI() async {
@@ -55,7 +55,7 @@ Future<SpecialItem?> getOneStopAPI() async {
   if(res == null || res is! Map<String, dynamic>){
     return null;
   }
-  return SpecialItem.fromJson(res);
+  return SpecialItem.formJSON(res);
 }
 //推荐列表接口
 Future<List<GoodDetailItem>> getRecommendListAPI(Map<String, dynamic> params) async {

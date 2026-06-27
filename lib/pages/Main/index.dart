@@ -32,19 +32,24 @@ class _MainPageState extends State<MainPage> {
   }
   int _currentIndex = 0;
   List<Widget> _getChildren(){
-    return [HomeView(),CategoryView(),CartView(),MineView()];
+    return [
+      HomeView(),//首页组件
+      CategoryView(),//分类组件
+      CartView(),//购物车组件
+      MineView()];//我的组件
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //避开安全区
+      //避开安全区，避免被状态栏遮挡
        body: SafeArea(child: IndexedStack(
         index: _currentIndex,//当前选中的索引
         children: _getChildren(),//放置几个组件
        )),
        bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: true,//显示选中的文本
-        unselectedItemColor: Colors.black,//未选中的文本颜色
+        showUnselectedLabels: true,//显示未选中的文本
+        unselectedItemColor: Colors.grey,//未选中的文本颜色
         selectedItemColor: Colors.black,//选中的文本颜色
         currentIndex: _currentIndex,
         onTap: (int index) {
