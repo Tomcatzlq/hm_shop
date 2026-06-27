@@ -5,6 +5,7 @@ import 'package:hm_shop/components/Home/HmMoreList.dart';
 import 'package:hm_shop/components/Home/HmSlider.dart';
 import 'package:hm_shop/components/Home/HmSuggestion.dart';
 import 'package:hm_shop/components/Home/Hmhot.dart';
+import 'package:hm_shop/utils/toastUtils.dart';
 import 'package:hm_shop/viewmodels/home.dart';
 
 class HomeView extends StatefulWidget {
@@ -48,13 +49,13 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() { 
     super.initState();
-    _getBannerList();//获取轮播图列表
-    _getCategoryList();//获取分类列表
-    _getSpecialList();//获取特惠推荐列表
-    _getHotList();//获取热榜推荐列表
-    _getOneStopList();//获取一站式推荐列表
-    _getRecommendList();//获取推荐列表
-    _registerEvent();//注册事件
+    _registerEvent();//注册事件 
+    //通过微任务  initState() ----> build() ----> 下拉刷新组件 ----> 操作下拉刷新组件
+    Future.microtask((){
+      //下拉刷新组件显示
+      _paddingTop = 50;
+      _refreshKey.currentState?.show();
+    });
   }
   //页码
   int _page = 1;
@@ -76,7 +77,7 @@ class _HomeViewState extends State<HomeView> {
     final result = await getSpecialAPI();
     if(result != null){
       _specialItem = result;
-      setState(() {});
+      // setState(() {});
     }
   }
   //获取热榜推荐列表
@@ -84,7 +85,7 @@ class _HomeViewState extends State<HomeView> {
     final result = await getInVogueAPI();
     if(result != null){
       _hotItem = result;
-      setState(() {});
+      // setState(() {});
     }
   }
   //获取一站式推荐列表
@@ -92,20 +93,20 @@ class _HomeViewState extends State<HomeView> {
     final result = await getOneStopAPI();
     if(result != null){
       _oneStopItem = result;
-      setState(() {});
+      // setState(() {});
     }
   }
   //获取轮播图列表
   Future<void> _getBannerList() async {
     _bannerList = await getBannerListAPI();
     // print(_bannerList);
-    setState(() {});
+    // setState(() {});
   }
   //获取分类列表
   Future<void> _getCategoryList() async {
     _categoryList = await getCategoryListAPI();
     // print(_categoryList);
-    setState(() {});
+    // setState(() {});
   }
   //获取推荐列表
   Future<void> _getRecommendList() async {
@@ -115,13 +116,14 @@ class _HomeViewState extends State<HomeView> {
     _isLoading = true;//占住位置
     _recommendList = await getRecommendListAPI({"limit": _page * 10});
     _isLoading = false;//释放位置
-    setState(() {});
+    setState(() {});//刷新界面,这里需要保留，因为需要刷新推荐列表
     if(_recommendList.length <  _page * 10){
       _hasMore = false;
       return;
     }
     _page++;
   }
+  //获取sliver家族的内容
   List<Widget> _getSlSlivers(){
     return [
       //包裹普通sliver家族的组件
@@ -151,13 +153,44 @@ class _HomeViewState extends State<HomeView> {
       HmMoreList(recommendList: _recommendList),
     ];
   }
+  //刷新数据
+  Future<void> onRefresh() async {
+    _page = 1;//重置页码
+    _hasMore = true;//重置是否有更多数据
+    _isLoading = false;//重置是否正在加载更多数据
+    await _getBannerList();//获取轮播图列表
+    await _getCategoryList();//获取分类列表
+    await _getSpecialList();//获取特惠推荐列表
+    await _getHotList();//获取热榜推荐列表
+    await _getOneStopList();//获取一站式推荐列表
+    await _getRecommendList();//获取推荐列表
+    //刷新完成
+    ToastUtils.showToast(context, "刷新完成");
+    //下拉刷新组件隐藏
+    _paddingTop = 0;
+    setState(() {});//刷新界面,统一执行这个逻辑
+  }
   //滚动控制器
+  //GlobalKey是一个方法可以创建一个全局的key绑定到widget上，操作该widget
+  final GlobalKey<RefreshIndicatorState> _refreshKey = GlobalKey<RefreshIndicatorState>();
   final ScrollController _scrollController = ScrollController();
+  //刷新组件的顶部间距
+  double _paddingTop = 0;
   @override
   Widget build(BuildContext context) {
-      return CustomScrollView(
-        slivers: _getSlSlivers(),
-        controller: _scrollController,//绑定滚动控制器
-        );////silver家族的内容
+      return RefreshIndicator(
+        key: _refreshKey,//绑定全局的key
+        //下拉刷新组件
+        onRefresh: onRefresh,//刷新数据
+        triggerMode: RefreshIndicatorTriggerMode.anywhere,//下拉刷新组件在任何位置都可以触发
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          padding: EdgeInsets.only(top: _paddingTop),
+          child: CustomScrollView(
+            slivers: _getSlSlivers(),
+            controller: _scrollController,//绑定滚动控制器
+          )////silver家族的内容
+        )
+      );
   }
 }
