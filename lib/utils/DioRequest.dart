@@ -30,7 +30,9 @@ class DioRequest {
                 
             },
             onError: (error, handler){
-                handler.reject(error);
+                // handler.reject(error);//拒绝请求，并没有包含错误信息
+                handler.reject(DioException(requestOptions: error.requestOptions, 
+                message: error.response?.data?["msg"] ?? "请求失败"));//包含错误信息
             },
         )
     );
@@ -44,20 +46,26 @@ class DioRequest {
   //处理响应
   Future<dynamic> _handleResponse(Future<Response<dynamic>> task) async {
     try{
-        //异步处理响应
-        Response<dynamic> res = await task;
-        final data = res.data as Map<String, dynamic>;//data才是真实的数据
-        //判断是否成功
-        if(data["code"] == GlobalConstants.SUCCESS_CODE){
-            return data["result"] as dynamic;
-        }
-        //如果失败，抛出异常
-            throw Exception(data["msg"] ?? "请求失败");
-        }
-        catch(e){
-            throw Exception("还没有处理就失败:" + e.toString());
+      //异步处理响应
+      Response<dynamic> res = await task;
+      final data = res.data as Map<String, dynamic>;//data才是真实的数据
+      //判断是否成功
+      if(data["code"] == GlobalConstants.SUCCESS_CODE){
+          return data["result"] as dynamic;
+      }
+      //如果失败，抛出异常
+          throw DioException(requestOptions: res.requestOptions, message: data["msg"] ?? "请求失败");
+    }catch(e){
+      // throw Exception("还没有处理就失败:" + e.toString());
+      rethrow;
     }
   }
+  //定义post请求
+  Future<dynamic> post(String url, {Map<String, dynamic>? params}){
+    // print("post请求:$url,参数:$params");
+      return _handleResponse(_dio.post(url, data: params));
+  }
 }
+
 //单例对象
 final DioRequest dioRequest = DioRequest();//单例对象,在App整个生命周期中也只会被实例化一次
