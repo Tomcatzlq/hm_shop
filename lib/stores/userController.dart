@@ -4,7 +4,7 @@ import 'package:hm_shop/viewmodels/user.dart';
 class UserController extends GetxController{
   var user = UserInfo.formJson({}).obs;//用户对象被监听了
   //想要取值的话，需要使用user.value
-  updateUserInfo(UserInfo newUser){//更新用户信息
+  void updateUserInfo(UserInfo newUser){//更新用户信息
     user.value = newUser;
   }
 }

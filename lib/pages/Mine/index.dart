@@ -3,8 +3,10 @@ import 'package:get/get.dart';
 import 'package:hm_shop/api/mine.dart';
 import 'package:hm_shop/components/Home/HmMoreList.dart';
 import 'package:hm_shop/components/Mine/HmGuess.dart';
+import 'package:hm_shop/stores/TokenManager.dart';
 import 'package:hm_shop/stores/userController.dart';
 import 'package:hm_shop/viewmodels/home.dart';
+import 'package:hm_shop/viewmodels/user.dart';
 
 class MineView extends StatefulWidget {
   MineView({Key? key}) : super(key: key);
@@ -15,7 +17,46 @@ class MineView extends StatefulWidget {
 
 class _MineViewState extends State<MineView> {
   //用户控制器
-  final UserController _userController = Get.put(UserController());
+  final UserController _userController = Get.find();
+  //退出登录按钮Widget
+  Widget _getLogOut(){
+    return _userController.user.value.id.isNotEmpty ? Expanded(
+      child:GestureDetector(
+        onTap: (){
+          //弹出确认提示框
+          showDialog(
+            context: context, 
+            builder: (context){
+              return AlertDialog(
+                title: Text("提示"),
+                content: Text("确定退出登录吗？"),
+                actions: [
+                  TextButton(
+                    onPressed: (){
+                      //点击取消按钮，关闭弹窗
+                      Navigator.pop(context);
+                    },
+                    child: Text("取消"),
+                  ),
+                  TextButton(
+                    onPressed: () async{
+                      //清除getx状态,删除token
+                      await tokenManager.removeToken();
+                      _userController.updateUserInfo(UserInfo.formJson({}));
+                      // 关闭弹窗
+                      Navigator.pop(context);
+                    },
+                    child: Text("确定"),
+                  ),
+                ],
+              );
+            }
+          );
+        },
+        child: Text("退出登录", style: TextStyle(fontSize: 18, color: Colors.black), textAlign: TextAlign.right,)
+      )
+    ) : Text("");
+  }
   Widget _buildHeader() {
     return Container(
       decoration: BoxDecoration(
@@ -64,6 +105,7 @@ class _MineViewState extends State<MineView> {
               ],
             ),
           ),
+          Obx(() => _getLogOut()),        
         ],
       ),
     );

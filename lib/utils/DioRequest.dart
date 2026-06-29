@@ -1,6 +1,7 @@
 //基于Dio的请求工具类
 import 'package:dio/dio.dart';
 import 'package:hm_shop/constants/index.dart';
+import 'package:hm_shop/stores/TokenManager.dart';
 
 class DioRequest {
   final Dio _dio = Dio();//dio请求对象
@@ -19,7 +20,14 @@ class DioRequest {
     _dio.interceptors.add(
         InterceptorsWrapper(
             onRequest: (request, handler){
-                handler.next(request);
+              //为什么直接用tokenManager.getToken()，而不是TokenManager.getToken()？
+              //因为TokenManager.getToken()是一个静态方法，需要通过实例化对象来调用，
+              //而tokenManager.getToken()是一个实例方法，不需要实例化对象来调用，前面通过单例模式来获取实例
+              if(tokenManager.getToken().isNotEmpty){
+                //注入token
+                request.headers = {"Authorization": "Bearer ${tokenManager.getToken()}"};
+              }
+              handler.next(request);
             },
             onResponse: (response, handler){
                 //判断是否成功

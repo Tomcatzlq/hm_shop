@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hm_shop/api/user.dart';
+import 'package:hm_shop/stores/TokenManager.dart';
 import 'package:hm_shop/stores/userController.dart';
+import 'package:hm_shop/utils/LoadingDialog.dart';
 import 'package:hm_shop/utils/ToastUtils.dart';
 
 class LoginPage extends StatefulWidget {
@@ -74,19 +76,26 @@ class _LoginPageState extends State<LoginPage> {
   }
   //登录方法
   Future<void> _login() async{
+    // 显示加载弹窗
     try{
+      LoadingDialog.show(context, message: "努力登录中...");
       final userInfo = await loginAPI({
         "account": _phoneController.text,
         "password": _codeController.text,
       });
       // print("当前的用户信息:$userInfo");
       _userController.updateUserInfo(userInfo);
+      // 登录成功，设置token
+      await tokenManager.setToken(userInfo.token);
+      // 隐藏加载弹窗
+      LoadingDialog.hide(context);
       ToastUtils.showToast(context, "登录成功");
       Navigator.pop(context);//返回上一个界面
-      // 登录成功，跳转到首页
-      Navigator.pushNamed(context, "/home");
     }catch(e){
       print(e);
+      // 隐藏加载弹窗
+      LoadingDialog.hide(context);
+      // 提示用户登录失败
       ToastUtils.showToast(context, (e as DioException).message ?? "登录失败");
     }
   }
