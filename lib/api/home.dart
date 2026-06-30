@@ -11,7 +11,7 @@ Future<List<BannerItem>> getBannerListAPI() async {
   if(res == null || res is! List){
     return [];
   }
-  return (res as List).map((item){
+  return (res).map((item){
     return BannerItem.formJSON(item as Map<String,dynamic>);//将map转换为banneritem对象
   }).toList();
 }
@@ -23,7 +23,7 @@ Future<List<CategoryItem>> getCategoryListAPI() async {
   if(res == null || res is! List){
     return [];
   }
-  return (res as List).map((item){
+  return (res).map((item){
     return CategoryItem.formJSON(item as Map<String,dynamic>);//将map转换为categoryitem对象
   }).toList();
 }
@@ -65,7 +65,7 @@ Future<List<GoodDetailItem>> getRecommendListAPI(Map<String, dynamic> params) as
   if(res == null || res is! List){
     return [];
   }
-  return (res as List).map((item){
+  return (res).map((item){
     return GoodDetailItem.formJSON(item as Map<String,dynamic>);//将map转换为gooddetailitem对象
   }).toList();
 }

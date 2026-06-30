@@ -5,7 +5,7 @@ class HmMoreList extends StatefulWidget {
   // 推荐列表
   final List<GoodDetailItem> recommendList;
 
-  HmMoreList({Key? key, required this.recommendList}) : super(key: key);
+  const HmMoreList({super.key, required this.recommendList});
 
   @override
   _HmMoreListState createState() => _HmMoreListState();
@@ -39,7 +39,7 @@ class _HmMoreListState extends State<HmMoreList> {
               widget.recommendList[index].name,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: Colors.black, fontSize: 20),
+              style: TextStyle(color: Colors.black, fontSize: 12),
             ),
           ),
           SizedBox(height: 6),
@@ -50,20 +50,20 @@ class _HmMoreListState extends State<HmMoreList> {
               children: [
                 Text.rich(
                   TextSpan(
-                    text: "¥${widget.recommendList[index].price}",
+                    text: "¥${double.parse(widget.recommendList[index].price).toInt()}",//只保留整数部分,防止安卓端溢出
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 20,
+                      fontSize: 14,
                       fontWeight: FontWeight.w800,
                     ),
                     children: [
                       TextSpan(text: " "),
                       TextSpan(
-                        text: "${widget.recommendList[index].price}",
+                        text: widget.recommendList[index].price,
                         style: TextStyle(
                           decoration: TextDecoration.lineThrough,
                           color: Colors.grey,
-                          fontSize: 12,
+                          fontSize: 10,
                         ),
                       ),
                     ],
@@ -71,7 +71,7 @@ class _HmMoreListState extends State<HmMoreList> {
                 ),
                 Text(
                   "${widget.recommendList[index].payCount}人付款",
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(color: Colors.grey, fontSize: 10),
                 ),
               ],
             ),

@@ -28,7 +28,7 @@ class TokenManager {
     return _token;//返回全局token 同步方法
   }
   //移除token
-  removeToken() async{
+  Future<void> removeToken() async{
     //获取实例对象
     final SharedPreferences prefs = await _getInstance();
     prefs.remove(GlobalConstants.TOKEN_KEY);//移除token 磁盘中移除

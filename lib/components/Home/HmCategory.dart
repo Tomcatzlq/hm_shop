@@ -4,7 +4,7 @@ import 'package:hm_shop/viewmodels/home.dart';
 class Hmcategory extends StatefulWidget {
   //分类列表
   final List<CategoryItem> categoryList;
-  Hmcategory({Key? key,required this.categoryList}) : super(key: key);
+  const Hmcategory({super.key,required this.categoryList});
 
   @override
   _HmcategoryState createState() => _HmcategoryState();

@@ -6,7 +6,7 @@ class Hmslider extends StatefulWidget {
   //子类接受父类传过来的轮播图对象
   final List<BannerItem> bannerList;
   //构造函数
-  Hmslider({super.key,required this.bannerList});
+  const Hmslider({super.key,required this.bannerList});
 
   @override
   _HmsliderState createState() => _HmsliderState();

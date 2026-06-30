@@ -8,15 +8,15 @@ import 'package:hm_shop/utils/LoadingDialog.dart';
 import 'package:hm_shop/utils/ToastUtils.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController _phoneController = TextEditingController(); // 账号控制器
-  TextEditingController _codeController = TextEditingController(); // 密码控制器
+  final TextEditingController _phoneController = TextEditingController(); // 账号控制器
+  final TextEditingController _codeController = TextEditingController(); // 密码控制器
   final UserController _userController = Get.find(); // 寻找对象
   // 用户账号Widget
   Widget _buildPhoneTextField() {
@@ -154,15 +154,15 @@ class _LoginPageState extends State<LoginPage> {
         Text.rich(
           TextSpan(
             children: [
-              TextSpan(text: "查看并同意"),
+              TextSpan(text: "查看并同意", style: TextStyle(fontSize: 12)),
               TextSpan(
                 text: "《隐私条款》",
-                style: TextStyle(color: Colors.blue),
+                style: TextStyle(color: Colors.blue, fontSize: 12),
               ),
-              TextSpan(text: "和"),
+              TextSpan(text: "和", style: TextStyle(fontSize: 12)),
               TextSpan(
                 text: "《用户协议》",
-                style: TextStyle(color: Colors.blue),
+                style: TextStyle(color: Colors.blue, fontSize: 12),
               ),
             ],
           ),
@@ -195,24 +195,26 @@ class _LoginPageState extends State<LoginPage> {
         title: Text("惠多美登录", style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.white,
       ),
-      body: Form(
-        key: _formKey,
-        child: Container(
-          padding: EdgeInsets.all(30),
-          color: Colors.white,
-          child: Column(
-            children: [
-              SizedBox(height: 20),
-              _buildHeader(),
-              SizedBox(height: 30),
-              _buildPhoneTextField(),
-              SizedBox(height: 20),
-              _buildCodeTextField(),
-              SizedBox(height: 20),
-              _buildCheckbox(),
-              SizedBox(height: 20),
-              _buildLoginButton(),
-            ],
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Container(
+            padding: EdgeInsets.all(30),
+            color: Colors.white,
+            child: Column(
+              children: [
+                SizedBox(height: 20),
+                _buildHeader(),
+                SizedBox(height: 30),
+                _buildPhoneTextField(),
+                SizedBox(height: 20),
+                _buildCodeTextField(),
+                SizedBox(height: 20),
+                _buildCheckbox(),
+                SizedBox(height: 20),
+                _buildLoginButton(),
+              ],
+            ),
           ),
         ),
       ),

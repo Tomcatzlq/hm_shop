@@ -9,7 +9,7 @@ import 'package:hm_shop/viewmodels/home.dart';
 import 'package:hm_shop/viewmodels/user.dart';
 
 class MineView extends StatefulWidget {
-  MineView({Key? key}) : super(key: key);
+  const MineView({super.key});
 
   @override
   _MineViewState createState() => _MineViewState();
@@ -239,7 +239,7 @@ class _MineViewState extends State<MineView> {
   }
 
   //猜你喜欢列表
-  List<GoodDetailItem> _list = [];
+  final List<GoodDetailItem> _list = [];
   //猜你喜欢列表接口 有参数 分页参数page:1,pageSize:10
   @override
   void initState() { 
@@ -260,7 +260,7 @@ class _MineViewState extends State<MineView> {
   //定义阀门
   bool _isLoading = false;//是否正在加载
   bool _hasMore = true;//是否还有更多数据
-  Map<String, dynamic> _params = {"page":1,"pageSize":10};//分页参数
+  final Map<String, dynamic> _params = {"page":1,"pageSize":10};//分页参数
   //获取猜你喜欢列表
   Future<void> _getGuessList() async {
     if(_isLoading || !_hasMore){
